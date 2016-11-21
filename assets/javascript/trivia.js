@@ -52,6 +52,7 @@ $(document).ready(function() {
             $('#questionArea').empty();
             $('#options').empty();
             $('#resultsBox').empty();
+            $('#resetBtn').empty();
             $('#questionArea').html('<h2>' + this.trivia[this.questionSequence].question) + '</h2>';
             for (var i = 0; i < this.trivia[this.questionSequence].answers.length; i++) {
                 var option = $('<button>');
@@ -130,7 +131,18 @@ $(document).ready(function() {
             var playAgain = $('<button>');
             playAgain.text('Play Again??');
             playAgain.addClass('btn resetBtn');
-            $('#resultsBox').append(playAgain);
+            $('#resetBtn').append(playAgain);
+        },
+        playAgain: function() {
+            $('#startBtn').empty();
+            $('#questionArea').empty();
+            $('#options').empty();
+            $('#resultsBox').empty();
+            right = 0;
+            wrong = 0;
+            unanswered = 0;
+            gameEvents.questionSequence = -1
+            gameEvents.nextQuestion();
         },
     }
     // display Start button on page load only
@@ -148,13 +160,8 @@ $(document).ready(function() {
         gameEvents.nextQuestion();
     });
     //
-    $('.resetBtn').on('click', function() {
-        $('#startBtn').empty();
-        $('#questionArea').empty();
-        $('#options').empty();
-        $('#resultsBox').empty();
-        gameEvents.questionSequence = -1
-        gameEvents.nextQuestion();
+    $('#resetBtn').on('click', function() {
+        gameEvents.playAgain();
     });
     // click event listener when click on one of the answers
     function selection() {
