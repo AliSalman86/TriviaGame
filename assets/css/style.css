@@ -1,5 +1,6 @@
 body {
     background: url('https://newevolutiondesigns.com/images/freebies/black-wallpaper-10.jpg');
+    font-family: 'Roboto Mono', monospace;
 }
 
 h1 {
@@ -7,16 +8,21 @@ h1 {
     color: #fff;
 }
 
+p, h2, h3, h4 {
+    color: #fff;
+}
+
 span {
     color: red;
 }
 
-.startBtn {
+button {
     height: 30px;
     width: 200px;
     border: 1px solid #fff;
     background: rgba(255, 255, 255, 0.2);
     margin: 10px auto;
+    color: #fff;
     transition: all 0.4s ease-in-out;
 }
 
@@ -24,4 +30,9 @@ button:hover {
     color: #fff;
     border-color: #cccccc;
     background-color: #4aaaa5;
+}
+
+.resultPic {
+    width: 540px;
+    height: 320px;
 }
