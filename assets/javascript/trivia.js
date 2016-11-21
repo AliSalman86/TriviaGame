@@ -7,7 +7,7 @@ $(document).ready(function() {
     var timeUp;
     // Game Events object
     var gameEvents = {
-        questionSequence: 0, // define the sequence of questions
+        questionSequence: -1, // define the sequence of questions
         // Questions, options and answers array
         trivia: [{
             qid: 0,
@@ -55,7 +55,7 @@ $(document).ready(function() {
             $('#questionArea').html('<h2>' + this.trivia[this.questionSequence].question) + '</h2>';
             for (var i = 0; i < this.trivia[this.questionSequence].answers.length; i++) {
                 var option = $('<button>');
-                option.addClass('btn btn-info text-center answer');
+                option.addClass('btn btn-default text-center answer');
                 option.attr('data-option', this.trivia[this.questionSequence].answers[i]);
                 option.text(this.trivia[this.questionSequence].answers[i]);
                 $('#options').append(option);
@@ -125,7 +125,7 @@ $(document).ready(function() {
     // display Start button on page load only
     function startBtn() {
         var startBtn = $('<button>');
-        startBtn.addClass('btn btn-primary startBtn');
+        startBtn.addClass('btn btn-default startBtn');
         startBtn.text('START THE TRIVIA');
         $('#startBtn').append(startBtn);
     }
@@ -134,7 +134,7 @@ $(document).ready(function() {
     }
     //start button click event, start the questions and timer
     $('#startBtn').on('click', function() {
-        gameEvents.play();
+        gameEvents.nextQuestion();
     });
     // click event listener when click on one of the answers
     function selection() {
