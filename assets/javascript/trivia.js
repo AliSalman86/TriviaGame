@@ -4,7 +4,7 @@ $(document).ready(function() {
     var wrong = 0;
     var unanswered = 0;
     var btnColors = ['primary', 'warning', 'primary', 'warning'];
-    var selection;
+    var timeUp;
     // Game Events object
     var gameEvents = {
         questionSequence: 0, // define the sequence of questions
@@ -47,9 +47,11 @@ $(document).ready(function() {
             $('#timer').html('<p>You have: ' + gameEvents.counter + ' seconds</p>');
         },
         play: function() {
+            gameEvents.countStart();
             $('#startBtn').empty();
             $('#questionArea').empty();
             $('#options').empty();
+            $('#resultsBox').empty();
             $('#questionArea').html('<h2>' + this.trivia[this.questionSequence].question) + '</h2>';
             for (var i = 0; i < this.trivia[this.questionSequence].answers.length; i++) {
                 var option = $('<button>');
@@ -62,22 +64,52 @@ $(document).ready(function() {
             selection();
         },
         // checking function, to check if the answer correct or No
+        // displaying a caption and image for 5 seconds either way
         check: function(choise) {
             if (choise == this.trivia[this.questionSequence].correctAnswer) {
-                $('#resultsBox').html('<h2>Correct!</h2>');
+                clearTimeout(timeUp);
                 right++;
-                this.countReset();
+                $('#timer').empty();
+                $('#questionArea').empty();
+                $('#options').empty();
+                $('#resultsBox').empty();
+                gameEvents.countStop();
+                gameEvents.countReset();
+                $('#resultsBox').html('<h2>Correct!</h2>');
+                timeUp = setTimeout(gameEvents.nextQuestion, 4000)
             } else {
-                $('#resultsBox').html('<h2>Wrong!</h2>');
+                clearTimeout(timeUp);
                 wrong++;
-                this.countReset();
+                $('#timer').empty();
+                $('#questionArea').empty();
+                $('#options').empty();
+                $('#resultsBox').empty();
+                gameEvents.countStop();
+                gameEvents.countReset();
+                $('#resultsBox').html('<h2>Wrong!</h2>');
+                timeUp = setTimeout(gameEvents.nextQuestion, 4000)
             }
-            this.questionSequence++;
-            if (this.questionSequence == this.trivia.length) {
-                this.finalResults();
-            }
-            else if (this.questionSequence < this.trivia.length) {
-                this.play();
+        },
+        timeIsUp: function() {
+            clearTimeout(timeUp);
+            unanswered++;
+            $('#timer').empty();
+            $('#questionArea').empty();
+            $('#options').empty();
+            $('#resultsBox').empty();
+            gameEvents.countStop();
+            gameEvents.countReset();
+            $('#resultsBox').html('<h2>Time is Up!!!</h2>');
+            timeUp = setTimeout(gameEvents.nextQuestion, 4000)
+        },
+        // Next action: 1) go to next question if any left or go to the final results board
+        nextQuestion: function() {
+            gameEvents.questionSequence++;
+            if (gameEvents.questionSequence < gameEvents.trivia.length) {
+                gameEvents.play();
+                timeUp = setTimeout(gameEvents.timeIsUp, 30000);
+            } else {
+                gameEvents.finalResults();
             }
         },
         // function to show results after the last question
@@ -102,7 +134,6 @@ $(document).ready(function() {
     }
     //start button click event, start the questions and timer
     $('#startBtn').on('click', function() {
-        gameEvents.countStart();
         gameEvents.play();
     });
     // click event listener when click on one of the answers
